@@ -16,3 +16,9 @@ export async function requestLoginCode(phone: string) { if (!client) await start
 export async function verifyLoginCode(phone: string, code: string, password?: string) { if (!client) throw new Error("Cliente Telegram não inicializado"); try { await client.start({ phoneNumber: phone, phoneCode: async () => code, password: async () => password ?? "", onError: (error) => { throw error } }); status = "connected"; const session = String(client.session.save()); await saveTelegramConnection(status, session); log("info", "Autenticação concluída"); return status } catch (error: any) { if (String(error?.message).includes("PASSWORD")) { status = "awaiting_password"; return status }; throw error } }
 export async function verifyTwoFactorPassword(password: string) { if (!client) throw new Error("Cliente Telegram não inicializado"); await client.signInWithPassword({ apiId, apiHash }, { password: async () => password, onError: (error) => { throw error } }); status = "connected"; await saveTelegramConnection(status, String(client.session.save())); log("info", "Autenticação concluída"); return status }
 export async function disconnectTelegram() { if (client) await client.disconnect(); client = null; status = "disconnected"; await updateTelegramConnectionStatus(status); log("info", "Telegram desconectado") }
+
+export async function getTelegramAccount() {
+  if (!client || status !== "connected") return null
+  const me: any = await client.getMe()
+  return { phone: me.phone ?? "", name: [me.firstName, me.lastName].filter(Boolean).join(" "), username: me.username }
+}
