@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@12.3.4",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "bufferutil",
+      "es5-ext",
+      "esbuild",
+      "utf-8-validate"
+    ]
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
