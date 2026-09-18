@@ -3,9 +3,9 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Telegram Replicador',
-  description: 'Gerencie suas replicações de mensagens do Telegram em um único lugar.',
-  generator: 'v0.app',
+  title: 'REEF GALLERY — Aquarismo marinho premium',
+  description: 'Peixes marinhos, corais, invertebrados e equipamentos premium para o seu aquário de água salgada.',
+  generator: 'REEF GALLERY',
   icons: {
     icon: [
       {
@@ -39,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-PT">
       <body className="antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
