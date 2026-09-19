@@ -35,7 +35,7 @@ const translations = {
   IT: { shop: 'Negozio', categories: 'Categorie', essentials: 'Essenziali reef', journal: 'Journal', heroEyebrow: 'Più di un hobby', heroTitle: 'L’oceano, a casa.', heroBody: 'Pesci, coralli e tutto ciò che serve per creare un reef sano.', explore: 'Esplora la collezione', story: 'Scopri REEF GALLERY', search: 'Cosa cerchi per il tuo reef?', freeShipping: 'Spedizione gratuita da 99 €', account: 'Area cliente', cart: 'Carrello', empty: 'Il carrello è vuoto.' },
 } as const
 
-function Logo() { return <div className="flex items-center gap-3" aria-label="REEF GALLERY início"><Image src="/reef-gallery-logo.jpg" alt="Reef Gallery Aquatics" width={150} height={150} className="h-14 w-14 object-contain rounded-full" priority /><span className="font-display text-[21px] font-semibold tracking-[0.22em] text-[#062c43]">REEF GALLERY</span></div> }
+function Logo() { return <div className="flex items-center gap-3" aria-label="REEF GALLERY início"><Image src="/reef-gallery-logo.png" alt="Reef Gallery Aquatics" width={150} height={150} className="h-14 w-14 object-contain rounded-full" priority /><span className="font-display text-[21px] font-semibold tracking-[0.22em] text-[#062c43]">REEF GALLERY</span></div> }
 
 export function StorefrontHome() {
   const [menuOpen, setMenuOpen] = useState(false)
