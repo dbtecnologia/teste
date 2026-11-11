@@ -1,36 +1,16 @@
-import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'REEF GALLERY — Aquarismo marinho premium',
-  description: 'Peixes marinhos, corais, invertebrados e equipamentos premium para o seu aquário de água salgada.',
-  generator: 'REEF GALLERY',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
-  },
+  title: 'Central de assistência | Dudê Móveis',
+  description: 'Acompanhe chamados de assistência da Dudê Móveis.',
+  generator: 'Dudê Móveis',
+  icons: { icon: '/dude-moveis-logo.svg' },
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light dark',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
+  colorScheme: 'light',
+  themeColor: '#FAF5EA',
 }
 
 export default function RootLayout({
@@ -38,12 +18,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return (
-    <html lang="pt-PT">
-      <body className="antialiased">
-        {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
-      </body>
-    </html>
-  )
+  return <html lang="pt-BR"><body>{children}</body></html>
 }

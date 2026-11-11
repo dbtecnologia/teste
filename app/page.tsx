@@ -1,12 +1,10 @@
-import StorefrontHome from '@/components/storefront-home'
-
-export default function Page() {
-  return <StorefrontHome />
-}
+import DudeAssistanceApp from '@/components/dude-assistance-app'
 
 export const metadata = {
-  title: 'REEF GALLERY — Aquarismo marinho premium',
-  description: 'Peixes marinhos, corais, invertebrados e equipamentos premium para o seu aquário de água salgada.',
+  title: 'Central de assistência | Dudê Móveis',
+  description: 'Registre e acompanhe assistências de móveis da Dudê Móveis.',
 }
 
-export const dynamic = 'force-static'
+export default function Page() {
+  return <DudeAssistanceApp initialView="entregador" />
+}
