@@ -1,4 +1,4 @@
-import DudeAssistanceApp from '@/components/dude-assistance-app'
+import { WorkspaceHub } from '@/components/dude-assistance-app'
 
 export const metadata = {
   title: 'Central de assistência | Dudê Móveis',
@@ -6,5 +6,5 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <DudeAssistanceApp initialView="entregador" />
+  return <WorkspaceHub />
 }

@@ -91,6 +91,20 @@ export interface Assistance {
   publicToken: string
 }
 
+export interface CustomerProfile {
+  id: string
+  name: string
+  phone: string
+  address: Address
+  createdAt: string
+}
+
+export interface CreateCustomerInput {
+  name: string
+  phone: string
+  address: Address
+}
+
 export interface CreateAssistanceInput {
   idempotencyKey: string
   storeId: string
@@ -169,12 +183,13 @@ const seed: Assistance[] = [
   },
 ]
 
-interface StoreState { assistances: Assistance[]; idempotency: Map<string, string>; actionKeys: Map<string, string>; revokedTokens: Set<string>; protocolSequence: number }
+interface StoreState { assistances: Assistance[]; customers: CustomerProfile[]; idempotency: Map<string, string>; actionKeys: Map<string, string>; revokedTokens: Set<string>; protocolSequence: number }
 
 declare global { var __dudeAssistanceState: StoreState | undefined }
 
 const state = (): StoreState => {
-  if (!globalThis.__dudeAssistanceState) globalThis.__dudeAssistanceState = { assistances: seed, idempotency: new Map(), actionKeys: new Map(), revokedTokens: new Set(), protocolSequence: 5 }
+  if (!globalThis.__dudeAssistanceState) globalThis.__dudeAssistanceState = { assistances: seed, customers: [], idempotency: new Map(), actionKeys: new Map(), revokedTokens: new Set(), protocolSequence: 5 }
+  if (!globalThis.__dudeAssistanceState.customers) globalThis.__dudeAssistanceState.customers = []
   return globalThis.__dudeAssistanceState
 }
 
@@ -213,6 +228,18 @@ export const getCustomerAssistance = (token: string) => {
   const item = state().assistances.find((entry) => entry.publicToken === token)
   if (!item) return null
   return clone({ protocol: item.protocol, storeName: item.storeName, manufacturer: item.manufacturer, model: item.model, status: item.status, statusLabel: statusMeta[item.status].label, statusDescription: statusMeta[item.status].description, expectedArrival: item.expectedArrival, completedAt: item.status === 'CONCLUIDA' ? item.events[item.events.length - 1]?.at : undefined, photos: item.photos.map(({ id, category, name, url }) => ({ id, category, name, url })), customerMedia: item.customerMedia, events: item.events.map(({ from, to, at }) => ({ from, to, at, label: statusMeta[to].label })) })
+}
+
+export const createCustomer = (input: CreateCustomerInput) => {
+  const name = input.name.trim()
+  const phone = input.phone.trim()
+  if (!name) invalid('Informe seu nome completo.')
+  if (!phone) invalid('Informe seu telefone.')
+  const address = input.address
+  if (!address?.cep || !address.street || (!address.number && !address.noNumber) || !address.neighborhood || !address.city || !address.state) invalid('Complete seu endereço: CEP, logradouro, número, bairro, cidade e UF.')
+  const profile: CustomerProfile = { id: randomUUID(), name, phone, address: clone(address), createdAt: now() }
+  state().customers.unshift(profile)
+  return clone(profile)
 }
 
 export const addCustomerMedia = (token: string, media: Omit<CustomerMedia, 'id' | 'createdAt'>) => {
