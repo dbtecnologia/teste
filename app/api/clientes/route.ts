@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server'
 
-import { createCustomer } from '@/lib/assistances'
+import { createCustomer, listCustomers } from '@/lib/assistances'
+
+export async function GET() {
+  return NextResponse.json({ items: listCustomers() })
+}
 
 export async function POST(request: Request) {
   try {

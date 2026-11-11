@@ -105,6 +105,8 @@ export interface CreateCustomerInput {
   address: Address
 }
 
+export type UpdateCustomerInput = Partial<CreateCustomerInput>
+
 export interface CreateAssistanceInput {
   idempotencyKey: string
   storeId: string
@@ -240,6 +242,29 @@ export const createCustomer = (input: CreateCustomerInput) => {
   const profile: CustomerProfile = { id: randomUUID(), name, phone, address: clone(address), createdAt: now() }
   state().customers.unshift(profile)
   return clone(profile)
+}
+
+export const listCustomers = () => clone(state().customers.sort((a, b) => b.createdAt.localeCompare(a.createdAt)))
+
+export const updateCustomer = (id: string, input: UpdateCustomerInput) => {
+  const profile = state().customers.find((item) => item.id === id)
+  if (!profile) throw new Error('Cliente não encontrado.')
+  const next = { name: input.name ?? profile.name, phone: input.phone ?? profile.phone, address: input.address ?? profile.address }
+  const updated = createCustomerValidation(next)
+  profile.name = updated.name
+  profile.phone = updated.phone
+  profile.address = updated.address
+  return clone(profile)
+}
+
+const createCustomerValidation = (input: CreateCustomerInput) => {
+  const name = input.name.trim()
+  const phone = input.phone.trim()
+  if (!name) invalid('Informe o nome completo.')
+  if (!phone) invalid('Informe o telefone.')
+  const address = input.address
+  if (!address?.cep || !address.street || (!address.number && !address.noNumber) || !address.neighborhood || !address.city || !address.state) invalid('Complete o endereço: CEP, logradouro, número, bairro, cidade e UF.')
+  return { name, phone, address: clone(address) }
 }
 
 export const addCustomerMedia = (token: string, media: Omit<CustomerMedia, 'id' | 'createdAt'>) => {
