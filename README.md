@@ -10,7 +10,7 @@ MVP funcional para registrar um móvel danificado durante a entrega, acompanhar 
 - Painel administrativo em `/painel`, com fila, totais por status, busca, filtros por loja e fabricante, detalhe, fotos, observações internas e ações controladas.
 - Quatro transições na ordem `Pendente → Aguardando chegada → Peça recebida → Concluída`.
 - Área pública em `/cliente/[token]`; o token é individual, não é o protocolo e pode ser substituído no painel.
-- Dados fictícios para duas lojas e usuários de teste.
+- Cadastro demonstrativo para cinco lojas e usuários de teste; duas unidades já vêm com chamados de exemplo.
 - Tema centralizado em `lib/dude-theme.ts`, com a marca substituível em `public/dude-moveis-logo.svg`.
 
 ## Rodar localmente

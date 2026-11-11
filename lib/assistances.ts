@@ -28,6 +28,15 @@ export interface Photo {
   url: string
 }
 
+export interface CustomerMedia {
+  id: string
+  name: string
+  type: string
+  size: number
+  url: string
+  createdAt: string
+}
+
 export interface AssistanceEvent {
   id: string
   from: AssistanceStatus | null
@@ -70,6 +79,7 @@ export interface Assistance {
   defectDescription: string
   partCode?: string
   photos: Photo[]
+  customerMedia: CustomerMedia[]
   status: AssistanceStatus
   createdAt: string
   updatedAt: string
@@ -99,6 +109,9 @@ export interface CreateAssistanceInput {
 export const stores: Store[] = [
   { id: 'store-centro', name: 'Dudê Móveis · Centro', city: 'São Paulo', state: 'SP', active: true },
   { id: 'store-norte', name: 'Dudê Móveis · Norte', city: 'Campinas', state: 'SP', active: true },
+  { id: 'store-sul', name: 'Dudê Móveis · Sul', city: 'Santo André', state: 'SP', active: true },
+  { id: 'store-leste', name: 'Dudê Móveis · Leste', city: 'São Paulo', state: 'SP', active: true },
+  { id: 'store-oeste', name: 'Dudê Móveis · Oeste', city: 'Osasco', state: 'SP', active: true },
 ]
 
 export const demoActors: Actor[] = [
@@ -133,26 +146,26 @@ const seed: Assistance[] = [
     id: 'asst-demo-001', protocol: 'DUD-2026-0001', storeId: 'store-centro', storeName: stores[0].name, courierId: 'courier-ana', courierName: 'Ana Souza',
     clientName: 'Camila Ferreira', address: { cep: '01310-100', street: 'Avenida Paulista', number: '1578', noNumber: false, neighborhood: 'Bela Vista', city: 'São Paulo', state: 'SP', complement: 'Apto 84' },
     manufacturer: 'Madesa', model: 'Cômoda Aurora 6 gavetas', damagedPart: 'Frente da gaveta 3', defectDescription: 'A peça chegou com uma quina quebrada e acabamento lascado.', partCode: 'MD-AUR-03',
-    photos: [photo('peca', 'quina-quebrada.jpg', '/placeholder.jpg'), photo('manual', 'manual-aurora.jpg', '/placeholder-logo.png')], status: 'PENDENTE', createdAt: '2026-11-10T13:20:00.000Z', updatedAt: '2026-11-10T13:20:00.000Z', events: [event(null, 'PENDENTE', '2026-11-10T13:20:00.000Z', 'courier-ana')], notes: [], publicToken: 'cliente-demo-0001',
+    photos: [photo('peca', 'quina-quebrada.jpg', '/images/damage-piece.svg'), photo('manual', 'manual-aurora.jpg', '/images/manual-aurora.svg')], customerMedia: [], status: 'PENDENTE', createdAt: '2026-11-10T13:20:00.000Z', updatedAt: '2026-11-10T13:20:00.000Z', events: [event(null, 'PENDENTE', '2026-11-10T13:20:00.000Z', 'courier-ana')], notes: [], publicToken: 'cliente-demo-0001',
   },
   {
     id: 'asst-demo-002', protocol: 'DUD-2026-0002', storeId: 'store-centro', storeName: stores[0].name, courierId: 'courier-ana', courierName: 'Ana Souza',
     clientName: 'Lucas Ribeiro', address: { cep: '04538-133', street: 'Rua Clodomiro Amazonas', number: '115', noNumber: false, neighborhood: 'Itaim Bibi', city: 'São Paulo', state: 'SP' },
     manufacturer: 'Dudê Casa', model: 'Mesa de jantar Nexo', damagedPart: 'Tampo da mesa', defectDescription: 'Risco profundo no tampo, identificado na conferência da entrega.', partCode: 'NX-TAMPO-01',
-    photos: [photo('peca', 'risco-tampo.jpg', '/placeholder.jpg'), photo('manual', 'manual-nexo.jpg', '/placeholder-logo.png')], status: 'AGUARDANDO_CHEGADA', createdAt: '2026-11-07T14:10:00.000Z', updatedAt: '2026-11-08T10:30:00.000Z', expectedArrival: '2026-11-18', manufacturerOrder: 'FAB-78421',
-    events: [event(null, 'PENDENTE', '2026-11-07T14:10:00.000Z', 'courier-ana'), event('PENDENTE', 'AGUARDANDO_CHEGADA', '2026-11-08T10:30:00.000Z', 'attendant-centro', 'Pedido FAB-78421 registrado.')], notes: [{ id: randomUUID(), body: 'Fabricante confirmou produção da reposição.', at: '2026-11-08T10:33:00.000Z', actor: actor('attendant-centro') }], publicToken: 'cliente-demo-0002',
+    photos: [photo('peca', 'risco-tampo.jpg', '/images/sideboard-livia.svg'), photo('manual', 'manual-nexo.jpg', '/images/manual-aurora.svg')], status: 'AGUARDANDO_CHEGADA', createdAt: '2026-11-07T14:10:00.000Z', updatedAt: '2026-11-08T10:30:00.000Z', expectedArrival: '2026-11-18', manufacturerOrder: 'FAB-78421',
+    events: [event(null, 'PENDENTE', '2026-11-07T14:10:00.000Z', 'courier-ana'), event('PENDENTE', 'AGUARDANDO_CHEGADA', '2026-11-08T10:30:00.000Z', 'attendant-centro', 'Pedido FAB-78421 registrado.')], customerMedia: [], notes: [{ id: randomUUID(), body: 'Fabricante confirmou produção da reposição.', at: '2026-11-08T10:33:00.000Z', actor: actor('attendant-centro') }], publicToken: 'cliente-demo-0002',
   },
   {
     id: 'asst-demo-003', protocol: 'DUD-2026-0003', storeId: 'store-norte', storeName: stores[1].name, courierId: 'courier-ana', courierName: 'Ana Souza',
     clientName: 'Fernanda Costa', address: { cep: '13010-111', street: 'Rua Barreto Leme', number: '620', noNumber: false, neighborhood: 'Centro', city: 'Campinas', state: 'SP' },
-    manufacturer: 'Dudê Casa', model: 'Armário Loft 2 portas', damagedPart: 'Porta direita', defectDescription: 'A porta não alinha com o corpo do armário.', photos: [photo('peca', 'porta-desalinhada.jpg', '/placeholder.jpg'), photo('manual', 'manual-loft.jpg', '/placeholder-logo.png')], status: 'PECA_RECEBIDA', createdAt: '2026-11-03T09:40:00.000Z', updatedAt: '2026-11-12T16:20:00.000Z', expectedArrival: '2026-11-12', manufacturerOrder: 'FAB-78110',
-    events: [event(null, 'PENDENTE', '2026-11-03T09:40:00.000Z', 'courier-ana'), event('PENDENTE', 'AGUARDANDO_CHEGADA', '2026-11-04T11:00:00.000Z', 'attendant-norte'), event('AGUARDANDO_CHEGADA', 'PECA_RECEBIDA', '2026-11-12T16:20:00.000Z', 'attendant-norte')], notes: [], publicToken: 'cliente-demo-0003',
+    manufacturer: 'Dudê Casa', model: 'Armário Loft 2 portas', damagedPart: 'Porta direita', defectDescription: 'A porta não alinha com o corpo do armário.', photos: [photo('peca', 'porta-desalinhada.jpg', '/images/wardrobe-aurora.svg'), photo('manual', 'manual-loft.jpg', '/images/manual-aurora.svg')], status: 'PECA_RECEBIDA', createdAt: '2026-11-03T09:40:00.000Z', updatedAt: '2026-11-12T16:20:00.000Z', expectedArrival: '2026-11-12', manufacturerOrder: 'FAB-78110',
+    events: [event(null, 'PENDENTE', '2026-11-03T09:40:00.000Z', 'courier-ana'), event('PENDENTE', 'AGUARDANDO_CHEGADA', '2026-11-04T11:00:00.000Z', 'attendant-norte'), event('AGUARDANDO_CHEGADA', 'PECA_RECEBIDA', '2026-11-12T16:20:00.000Z', 'attendant-norte')], customerMedia: [], notes: [], publicToken: 'cliente-demo-0003',
   },
   {
     id: 'asst-demo-004', protocol: 'DUD-2026-0004', storeId: 'store-norte', storeName: stores[1].name, courierId: 'courier-ana', courierName: 'Ana Souza',
     clientName: 'Paulo Mendes', address: { cep: '13025-240', street: 'Rua Maria Monteiro', number: '91', noNumber: false, neighborhood: 'Cambuí', city: 'Campinas', state: 'SP' },
-    manufacturer: 'Madesa', model: 'Painel Home Oslo', damagedPart: 'Prateleira inferior', defectDescription: 'Peça substituída e instalada pela equipe.', photos: [photo('peca', 'prateleira.jpg', '/placeholder.jpg'), photo('manual', 'manual-oslo.jpg', '/placeholder-logo.png')], status: 'CONCLUIDA', createdAt: '2026-10-28T12:00:00.000Z', updatedAt: '2026-11-05T15:45:00.000Z', completionNote: 'Peça entregue e montagem conferida com o cliente.',
-    events: [event(null, 'PENDENTE', '2026-10-28T12:00:00.000Z', 'courier-ana'), event('PENDENTE', 'AGUARDANDO_CHEGADA', '2026-10-29T09:00:00.000Z', 'attendant-norte'), event('AGUARDANDO_CHEGADA', 'PECA_RECEBIDA', '2026-11-04T10:20:00.000Z', 'attendant-norte'), event('PECA_RECEBIDA', 'CONCLUIDA', '2026-11-05T15:45:00.000Z', 'attendant-norte', 'Peça entregue e montagem conferida com o cliente.')], notes: [], publicToken: 'cliente-demo-0004',
+    manufacturer: 'Madesa', model: 'Painel Home Oslo', damagedPart: 'Prateleira inferior', defectDescription: 'Peça substituída e instalada pela equipe.', photos: [photo('peca', 'prateleira.jpg', '/images/sideboard-livia.svg'), photo('manual', 'manual-oslo.jpg', '/images/manual-aurora.svg')], status: 'CONCLUIDA', createdAt: '2026-10-28T12:00:00.000Z', updatedAt: '2026-11-05T15:45:00.000Z', completionNote: 'Peça entregue e montagem conferida com o cliente.',
+    events: [event(null, 'PENDENTE', '2026-10-28T12:00:00.000Z', 'courier-ana'), event('PENDENTE', 'AGUARDANDO_CHEGADA', '2026-10-29T09:00:00.000Z', 'attendant-norte'), event('AGUARDANDO_CHEGADA', 'PECA_RECEBIDA', '2026-11-04T10:20:00.000Z', 'attendant-norte'), event('PECA_RECEBIDA', 'CONCLUIDA', '2026-11-05T15:45:00.000Z', 'attendant-norte', 'Peça entregue e montagem conferida com o cliente.')], customerMedia: [], notes: [], publicToken: 'cliente-demo-0004',
   },
 ]
 
@@ -199,7 +212,18 @@ export const getCustomerAssistance = (token: string) => {
   if (state().revokedTokens.has(token)) return null
   const item = state().assistances.find((entry) => entry.publicToken === token)
   if (!item) return null
-  return clone({ protocol: item.protocol, storeName: item.storeName, manufacturer: item.manufacturer, model: item.model, status: item.status, statusLabel: statusMeta[item.status].label, statusDescription: statusMeta[item.status].description, expectedArrival: item.expectedArrival, completedAt: item.status === 'CONCLUIDA' ? item.events[item.events.length - 1]?.at : undefined, events: item.events.map(({ from, to, at }) => ({ from, to, at, label: statusMeta[to].label })) })
+  return clone({ protocol: item.protocol, storeName: item.storeName, manufacturer: item.manufacturer, model: item.model, status: item.status, statusLabel: statusMeta[item.status].label, statusDescription: statusMeta[item.status].description, expectedArrival: item.expectedArrival, completedAt: item.status === 'CONCLUIDA' ? item.events[item.events.length - 1]?.at : undefined, photos: item.photos.map(({ id, category, name, url }) => ({ id, category, name, url })), customerMedia: item.customerMedia, events: item.events.map(({ from, to, at }) => ({ from, to, at, label: statusMeta[to].label })) })
+}
+
+export const addCustomerMedia = (token: string, media: Omit<CustomerMedia, 'id' | 'createdAt'>) => {
+  if (state().revokedTokens.has(token)) throw new Error('Este link foi revogado. Solicite um novo acesso à loja.')
+  const item = state().assistances.find((entry) => entry.publicToken === token)
+  if (!item) throw new Error('Assistência não encontrada.')
+  if (!media.type.startsWith('image/') && !media.type.startsWith('video/')) throw new Error('Envie uma foto ou vídeo.')
+  if (media.size > 25 * 1024 * 1024) throw new Error('O arquivo deve ter no máximo 25 MB.')
+  item.customerMedia.unshift({ ...clone(media), id: randomUUID(), createdAt: now() })
+  item.updatedAt = now()
+  return getCustomerAssistance(token)
 }
 
 const invalid = (message: string): never => { throw new Error(message) }
@@ -224,7 +248,7 @@ export const createAssistance = (input: CreateAssistanceInput) => {
   const store = stores.find((item) => item.id === input.storeId) ?? stores[0]
   const createdAt = now()
   const protocol = `DUD-${new Date().getFullYear()}-${String(current.protocolSequence++).padStart(4, '0')}`
-  const created: Assistance = { id: randomUUID(), protocol, storeId: store.id, storeName: store.name, courierId: input.courierId, courierName: input.courierName, clientName: input.clientName.trim(), address: clone(input.address), manufacturer: input.manufacturer.trim(), model: input.model.trim(), damagedPart: input.damagedPart.trim(), defectDescription: input.defectDescription.trim(), partCode: input.partCode?.trim() || undefined, photos: clone(input.photos), status: 'PENDENTE', createdAt, updatedAt: createdAt, events: [event(null, 'PENDENTE', createdAt, input.courierId)], notes: [], publicToken: randomUUID() }
+  const created: Assistance = { id: randomUUID(), protocol, storeId: store.id, storeName: store.name, courierId: input.courierId, courierName: input.courierName, clientName: input.clientName.trim(), address: clone(input.address), manufacturer: input.manufacturer.trim(), model: input.model.trim(), damagedPart: input.damagedPart.trim(), defectDescription: input.defectDescription.trim(), partCode: input.partCode?.trim() || undefined, photos: clone(input.photos), customerMedia: [], status: 'PENDENTE', createdAt, updatedAt: createdAt, events: [event(null, 'PENDENTE', createdAt, input.courierId)], notes: [], publicToken: randomUUID() }
   current.assistances.push(created)
   current.idempotency.set(input.idempotencyKey, created.id)
   return clone(created)
